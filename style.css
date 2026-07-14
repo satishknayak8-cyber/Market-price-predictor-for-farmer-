@@ -1,0 +1,361 @@
+body{
+    background:#F4F9F4;
+color: #1B1B1B;
+}
+
+.navbar{
+    height:70px;
+    width:100%;
+    background:#2E7D32;
+    position:sticky;
+    top:0px;
+    left:0px;
+    z-index:1000;
+
+}
+
+.navbar h1{
+position: relative;
+left:20px;
+top:10px;
+}
+.navbar ul{
+    position:absolute;
+    top:1px;
+    right:20px;
+   list-style-type:none;
+   padding-bottom: 20px;
+
+overflow:hidden;
+
+}
+
+.navbar ul li{
+    text-decoration: none;
+    padding:10px;
+    margin-left: 10px;
+    display:block;
+    color:white;
+float: left;
+font-size:20px;
+
+}
+
+ul{
+    position: relative;
+    right:10px;
+}
+
+
+.navbar li:hover{
+    text-decoration: underline white 2px ;
+    translate:0px -4px;
+    cursor: pointer;
+}
+
+.navbar li.active{
+    text-decoration: underline white 1.5px ;
+}
+.hero{
+    position:relative;
+    top:50px;
+    height:500px;
+    width:100%;
+}
+
+.hero-slider{
+    width:100%;
+    height:100%;
+}
+
+
+.hero-slide{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    opacity:0;
+    transition:opacity 0.8s ease;
+}
+
+.hero-slide.active{
+    opacity:1;
+}
+
+.left{
+    height:100px;
+    width:60px;
+    font-size:40px;
+    position:absolute;
+    top:180px;
+    left:10px;
+    background:transparent;
+    border:none;
+}
+
+.right{
+    height:100px;
+    width:60px;
+    font-size:40px;
+    position:absolute;
+    top:180px;
+    left:1440px;
+    background:transparent;
+    border:none;
+}
+
+.cards{
+    position:absolute;
+    top:600px;
+    left:30px;
+    display:flex;
+}
+
+.card{
+    height:300px;
+    width:250px;
+    position:relative;
+    top:20px;
+    margin:30px;
+    padding:20px;
+    background:#FFFFFF;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.card:hover{
+   transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(0,0,0,0.15);
+transition: 0.3s ease;
+    
+}
+
+.inner-container{
+    position:relative;
+    top:20px;
+    display:flex;
+    padding:20px;
+    gap:20px;
+    justify-content: space-evenly;
+}
+.card2{
+    height: 350px;
+    width:350px;
+     background:#FFFFFF;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    position:relative;
+    top:20px;
+    left:20px;
+    padding:20px;
+}
+
+.input-box{
+ display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.input-box:hover{
+    transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(0,0,0,0.15);
+transition: 0.3s ease;
+}
+
+.input-box select
+{   position:relative;
+    top:50px;
+    left:10px;
+    right:20px;
+    border:1px solid black;
+    border-radius: 5px;
+    padding:10px;
+    width: 320px;;
+}
+
+.input-box input{
+    position: relative;
+    top:50px;
+    left:10px;
+    right:20px;
+    border:1px solid black;
+    border-radius: 5px;
+    padding:10px;
+    width: 300px;
+}
+
+.input-box button {
+    position: relative;
+    top:70px;
+    left:130px;
+    width:80px;
+    height: 30px;
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.p{
+    position:relative;
+    top:70px;
+    left:120px;
+}
+
+.card2 h2{
+    position:relative;
+    left:120px;
+}
+
+.card2 h3,p{
+    position:relative;
+left:10px;
+top:10px;
+}
+
+
+#nearby-market h1{
+    position:relative;
+    left:10px;
+    top:10px;
+}
+
+#nearby-market input{
+    position:relative;
+    left:100px;
+    top:10px;
+    width: 320px;
+    padding:10px;
+    border:1px solid black;
+    border-radius: 5px;
+    background: transparent;
+}
+
+#nearby-market select{
+    position:relative;
+    left:100px;
+    top:10px;
+    width: 320px;
+    padding:10px;
+    border:1px solid black;
+    border-radius: 5px;
+    background: transparent;
+}
+
+button {
+    position:relative;
+    left:120px;
+    top:20px;
+    padding: 10px;
+    height:40px;
+    width:120px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+table {
+    margin: 20px auto;
+    width: 80%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.dashboard-cards{
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap:30px;
+    position: relative;
+    left:50px;
+}
+
+.dashboard-card{
+    height:300px;
+    width: 250px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border-radius:8px;
+    margin:40px;
+    padding:20px;
+    background-color:#FFFFFF;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-6px);
+    transition: 0.3s ease;
+}
+
+
+.graph-box {
+    width: 650px;
+    height: 400px;
+    margin: auto;
+    position:absolute;
+    left:440px;
+    top:320px;
+}
+
+.graph-box canvas {
+    width: 100% !important;
+    height: 250px !important;
+}
+
+.graph-input {
+    width:100%;
+    position:absolute;
+    left:10px;
+    top:60px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top:60px;
+}
+
+.graph-input select
+{
+    margin-bottom: 5px;
+    margin-left: 17px;
+    padding: 5px 15px;
+    border:1px solid black;
+    border-radius:6px;
+    width:165px;
+}
+
+/*.graph-input button{
+    position:relative;
+    left:10px;
+    top:60px;
+}*/
+
+.change-day{
+    position:absolute;
+    height:200px;
+    width:600px;
+    left:350px;
+    top:100px;
+}
+
+/* 🔄 Loader */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #ddd;
+    border-top: 5px solid #28a745;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+

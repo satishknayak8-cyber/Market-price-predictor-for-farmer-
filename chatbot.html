@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>krushiMitra AI</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 15px;
+            margin-left: 10px;
+            background: #22c55e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .loading {
+            color: #facc15;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="chatBox" style="
+    max-width:600px;
+    margin:20px auto;
+    background:rgba(255,255,255,0.1);
+    padding:15px;
+    border-radius:10px;
+    height:400px;
+    overflow-y:auto;
+"></div>
+
+    <div style="margin-top:10px;">
+        <input type="text" id="userInput" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+
+        const GEMINI_API_KEY = "AIzaSyBEYAeUzGendMuno0wT7eVEUfpIB1zzMfw"; // 🔥 Put your Gemini key here
+
+        // 📍 Use Current Location
+        function useCurrentLocation() {
+            if (navigator.geolocation) {
+                document.getElementById("result").innerHTML = "📡 Getting your location...";
+
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+
+                    fetchMarkets(lat, lon, "Your Current Location");
+                },
+                    () => {
+                        alert("Location access denied ❌");
+                    });
+            }
+        }
+
+        // 🔍 Get Markets from input location
+        async function getMarkets() {
+            const location = document.getElementById("location").value.trim();
+
+            if (!location) {
+                alert("⚠️ Please enter a location");
+                return;
+            }
+
+            document.getElementById("result").innerHTML = "🔍 Searching location...";
+
+            try {
+                const geoRes = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&q=${encodeURIComponent(location)}`
+                );
+
+                const geoData = await geoRes.json();
+
+                console.log("GeoData:", geoData); // 👈 DEBUG
+
+                if (!geoData || geoData.length === 0) {
+                    document.getElementById("result").innerHTML =
+                        "❌ Location not found. Try another place.";
+                    return;
+                }
+
+                const lat = geoData[0].lat;
+                const lon = geoData[0].lon;
+
+                fetchMarkets(lat, lon, location);
+
+            } catch (err) {
+                console.error("Error:", err);
+                document.getElementById("result").innerHTML =
+                    "❌ Error fetching location";
+            }
+        }
+
+        // 🏪 Fetch Nearby Markets
+async function fetchMarketsFromBackend(location, crop="rice") {
+
+    addMessage("🏪 Finding best markets for you...", "bot");
+
+    try {
+        const res = await fetch("http://127.0.0.1:5000/nearby-markets", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                location: location,
+                crop: crop
+            })
+        });
+
+        const data = await res.json();
+
+        if (!data.markets || data.markets.length === 0) {
+            addMessage("❌ No nearby markets found", "bot");
+            return;
+        }
+
+        // ✅ Send to AI
+        const markets = data.markets.map(m =>
+            `${m.market} (₹${m.price}, ${m.distance} km)`
+        );
+
+        analyzeWithAI(markets, location);
+
+    } catch (err) {
+        console.error(err);
+        addMessage("❌ Server error", "bot");
+    }
+}
+
+        // 🤖 Gemini AI Analysis
+        async function analyzeWithAI(markets, location) {
+
+            document.getElementById("chatBox").innerHTML = "<p class='loading'>🤖 AI analyzing best market...</p>";
+
+            const prompt = `
+You are an expert agricultural market advisor for farmers in India.
+
+User Location: ${location}
+
+Nearby Markets:
+${markets.join(", ")}
+
+User wants to sell crops.
+
+Your task:
+1. Suggest the BEST market from the list
+2. Give reason (price, demand, distance)
+3. Suggest which crops are best to sell there
+4. Keep answer short (3-5 lines)
+5. Use simple language for farmers
+6.Hi
+
+Also:
+- Prefer well-known or bigger markets
+- Avoid unknown markets if possible
+`;
+
+            try {
+                const res = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: prompt }]
+                            }]
+                        })
+                    }
+                );
+
+                const data = await res.json();
+
+                const output = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI";
+
+                document.getElementById("chatBox").innerHTML = `
+      <h3>✅ Best Market Suggestion</h3>
+      <p>${output}</p>
+    `;
+
+            } catch (err) {
+                document.getElementById("chatBox").innerHTML = "❌ AI Error";
+            }
+        }
+
+
+
+        function addMessage(text, sender = "user") {
+            const chat = document.getElementById("chatBox");
+
+            const msg = document.createElement("div");
+            msg.style.margin = "10px";
+            msg.style.padding = "10px";
+            msg.style.borderRadius = "8px";
+            msg.style.maxWidth = "80%";
+
+            if (sender === "user") {
+                msg.style.background = "#22c55e";
+                msg.style.marginLeft = "auto";
+            } else {
+                msg.style.background = "#334155";
+            }
+
+            msg.innerText = text;
+            chat.appendChild(msg);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+function extractLocation(text) {
+    text = text.toLowerCase();
+
+    let cleaned = text
+        .replace("sell", "")
+        .replace("buy", "")
+        .replace("market", "")
+        .replace("mandi", "")
+        .replace("near", "")
+        .replace("in", "")
+        .replace("at", "")
+        .replace("crop", "")
+        .trim();
+
+    let words = cleaned.split(" ");
+    return words[words.length - 1];
+}
+
+function extractCrop(text) {
+    const crops = ["rice", "wheat", "potato", "onion", "tomato"];
+
+    text = text.toLowerCase();
+
+    for (let c of crops) {
+        if (text.includes(c)) return c;
+    }
+
+    return "rice"; // default
+}
+
+        async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
+
+    const msg = text.toLowerCase();
+
+    // ✅ 1. GREETING
+    if (
+        msg === "hi" ||
+        msg === "hello" ||
+        msg === "hey"
+    ) {
+       addMessage(
+"👋 Hello! I can help you:\n🌾 Find nearest market\n💰 Suggest best price\n📍 Locate mandi\n",
+"bot"
+);
+        return;
+    }
+
+    // ✅ 2. CURRENT LOCATION
+    if (msg.includes("near me")) {
+        useCurrentLocation();
+        return;
+    }
+
+    // ✅ 3. MARKET / CROP QUERY
+    if (
+        msg.includes("market") ||
+        msg.includes("mandi") ||
+        msg.includes("sell") ||
+        msg.includes("crop") ||
+        msg.split(" ").length <= 2   // like "Puri", "Balasore"
+    ) {
+        const location = extractLocation(text);
+        const crop = extractCrop(text);
+
+        console.log("Location:", location, "Crop:", crop);
+
+        fetchMarketsFromBackend(location, crop);
+        return;
+    }
+
+    // ✅ 4. GENERAL AI CHAT
+    simpleAIChat(text);
+}
+
+
+        async function getMarketsFromChat(location) {
+
+            addMessage("📍 Finding markets in " + location + "...", "bot");
+
+            const geoRes = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&q=${encodeURIComponent(location)}`
+            );
+
+            const geoData = await geoRes.json();
+
+            if (!geoData.length) {
+                addMessage("❌ Couldn't find location. Try nearest town.", "bot");
+                return;
+            }
+
+            const lat = geoData[0].lat;
+            const lon = geoData[0].lon;
+
+            fetchMarkets(lat, lon, location);
+        }
+
+
+
+        async function simpleAIChat(message) {
+
+            addMessage("🤖 Thinking...", "bot");
+
+            try {
+                const res = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: message }]
+                            }]
+                        })
+                    }
+                );
+
+                const data = await res.json();
+
+                const reply =
+                    data.candidates?.[0]?.content?.parts?.[0]?.text ||
+                    "No response";
+
+                addMessage(reply, "bot");
+
+            } catch (err) {
+                addMessage("❌ AI Error", "bot");
+                console.error(err);
+            }
+        }
+        
+ 
+    </script>
+
+</body>
+
+</html>

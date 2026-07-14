@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Georgia", serif;
+        }
+
+        #loginSection {
+            height: 500px;
+            width: 300px;
+            background: thistle;
+            border: none;
+            border-radius: 6px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        #admin-login{
+            position: relative;
+            top: 20px;
+            left: 60px;
+        }
+        #admin-dashboard{
+          position: relative;
+            top: 20px;
+            left: 20px;  
+        }
+        input,select {
+            position: relative;
+            top: 35px;
+            left: 20px;
+            margin: 10px;
+            height: 30px;
+            width: 240px;
+            border-radius: 6px;
+            border: 1px solid bisque;
+        }
+
+
+        button {
+            position: relative;
+            top: 40px;
+            left: 100px;
+            height: 40px;
+            width: 70px;
+            border-radius: 6px;
+            border: none;
+            background: green;
+            cursor: pointer;
+        }
+
+        #dashboardSection {
+            height: 500px;
+            width: 300px;
+            background: thistle;
+            border: none;
+            border-radius: 6px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        #close-login{
+            position: relative;
+            left: 270px;
+            top: 5px;
+            cursor: pointer;
+        }
+        
+         #close-dasboard{
+            position:relative;
+            left:272px;
+            top:2px;
+            cursor: pointer;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <div class="admin" id="loginSection">
+        <i class="fa-solid fa-xmark" id="close-login" style="color: rgb(61, 131, 190);" onclick="closePage()"></i>
+        <h2 style="display:inline" id="admin-login">Admin Login</h2>
+
+        <input id="admin-username" placeholder="Username">
+        <input id="admin-password" type="password" placeholder="Password">
+
+        <button onclick="adminLogin()">Login</button>
+    </div>
+
+    <!-- 📊 DASHBOARD SECTION -->
+    <div id="dashboardSection" style="display: none;">
+        <i class="fa-solid fa-xmark" id="close-dasboard" style="color: rgb(61, 131, 190);" onclick="closePage()"></i>
+        <h2 style="display: inline;" id="admin-dashboard">Admin Dashboard</h2>
+
+        <select id="crop">
+            <option>--Crop--</option>
+            <option value="Tomato">Tomato</option>
+            <option value="Potato">Potato</option>
+        </select>
+        <br>
+        <input id="market" placeholder="Market"><br>
+        <!--input id="lat" placeholder="Latitude"><br>
+        <input id="lon" placeholder="Longitude"><br>-->
+        <input id="date" type="date">
+        <input id="price" placeholder="Price"><br><br>
+
+        <button onclick="addMarket()">Add Data</button>
+        
+
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>krushiMitra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Leaflet CSS -->
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>krushiMitra</h1>
+        <ul>
+            <li class="active" onclick="showPage('home',this)">Home</li>
+            <li onclick="showPage('price-predict',this)">Price Prediction</li>
+            <li onclick="showPage('graph-view',this)">Graph view</li>
+            <li onclick="showPage('weather',this)"> Weather</li>
+            <li onclick="openChatbot()">Open Chatbot</li>
+            <li onclick="showPage('about',this)">About</li>
+            <li onclick="openAdminPage()">Admin</li>
+            <li onclick="openLoginPage()">Login/Sign up</li>
+        </ul>
+    </nav>
+
+
+    <div class="page" id="home">
+        <div class="hero">
+            <div class="hero-slider">
+                <img class="hero-slide active" src="image4.jpg">
+                <img class="hero-slide" src="image2.jpg">
+                <img class="hero-slide" src="image3.jpg">
+                <img class="hero-slide" src="image5.jpg">
+                <img class="hero-slide" src="image1.jpg">
+            </div>
+
+            <button class="left" onclick="prevSlide()">❮</button>
+            <button class="right" onclick="nextSlide()">❯</button>
+        </div>
+
+        <div class="cards">
+            <h3>Features</h3>
+            <div class="card">
+                <h2>Market Price Prediction</h2>
+                <p style="font-size:20px;">Hepls Farmers descide when to sell for maximum profit and show nearby market.
+                </p>
+            </div>
+            <div class="card">
+                <h3>Weather Integration</h3>
+                <p style="font-size:20px;">Fetch real time weather data,helps in crop plaining and harvesting decisions.
+                </p>
+            </div>
+            <div class="card">
+                <h3>Data Visualization</h3>
+                <p style="font-size:20px;">Showing the market price of crop graphically</p>
+            </div>
+            <div class="card">
+                <h2>AI Chatbot</h2>
+                <p style="font-size:20px;">Live chat with chatbot and provide Best maeket for seal.</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="page" id="price-predict" style="display:none;">
+
+        <h3>Market Price Prediction</h3>
+        <div class="inner-container">
+            <div class="input-box card2">
+                <select id="crop">
+                    <option>Select Crop</option>
+                    <option>Tomato</option>
+                    <option>Potato</option>
+                </select>
+                <input type="text" placeholder="Enter your location" id="location">
+                <button onclick="predictPrice() ,loadMarkets()">Predict</button>
+                <p class="p"></p>
+            </div>
+
+            <div class="suggestion card2">
+                <h2>Suggestion</h2>
+                <h3 class="output">🌽 crop | 📍 location</h3>
+                <h3 class="current-price">📈Current price :</h3>
+                <h3 class="predicted-price">🤖Predicted price :₹</h3>
+                <h3 class="advice">💡Suggestion:Wait 2 days.</h3>
+            </div>
+            <div class="demand card2">
+                <h2>Near Market</h2>
+            </div>
+
+        </div>
+        <br>
+        <br>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sl No.</th>
+                    <th>Market</th>
+                    <th>Distance</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="table"></tbody>
+        </table>
+
+
+    </div>
+    <!--Nearby Market-->
+
+    <div class="page" id="graph-view" style="display:none;">
+        <h3 style="display: inline;">Nearby Market</h3>
+        <div class="graph-input">
+            <h3>📊 View Price Graph</h3>
+
+            <select id="graphCrop">
+                <option>Select Crop</option>
+                <option>Tomato</option>
+                <option>Potato</option>
+            </select>
+
+            <select id="graphMarket">
+                <option>Select Market</option>
+                <option>Balasore</option>
+                <option>Bahanaga</option>
+                <option>Nilgiri</option>
+                <option>Remuna</option>
+                <option>Soro</option>
+            </select>
+            <div style="margin-bottom:10px;" class="change-day">
+                  <button onclick="changeDays(7),loadGraphFromInput()">Show Graph</button>
+            </div>
+
+
+        </div>
+        <div class="card2 graph-box">
+            <h3>📊 Price Trend</h3>
+            <div id="loader" style="display:none; text-align:center;">
+                <div class="spinner"></div>
+                <p>Loading graph...</p>
+            </div>
+            <canvas id="priceChart"></canvas>
+        </div>
+        
+
+    </div>
+    <!--Weather-->
+    <div class="page" id="weather" style="display:none;">
+        <h3>Today Weather</h3>
+        <div class="dashboard-cards">
+            <div class="dashboard-card" style="text-align: center;">
+                <div>
+                    <i class="fa-solid fa-temperature-high" style="color: rgb(228,123,40);"></i>
+                    <h2 data-key="temperature">Temperature</h2>
+                </div>
+                <p id="temperature" style="font-size:20px;">-- °C</p>
+                <p id="temp" style="font-size:20px;"></p>
+            </div> 
+
+            <div class="dashboard-card" style="text-align: center;">
+                <div>
+                    <i>💧</i>
+                    <h2 data-key="humidity">Humidity</h2>
+                </div>
+                <p id="humidity" style="font-size:20px;">-- %</p>
+                <p id="hum" style="font-size:20px;"></p>
+            </div>
+
+            <div class="dashboard-card" style="text-align: center;">
+                <div>
+                    <i>🌦️</i>
+                    <h2>Weather</h2>
+                </div>
+                <p id="weatherCondition" style="font-size:20px;">--</p>
+                <p id="weatherDescription" style="font-size:20px;">--</p>
+            </div>
+
+            <div class="dashboard-card" style="text-align: center;">
+                <div>
+                    <div>
+                        <i class="fa-solid fa-cloud" style="color: rgb(61,131,190);"></i>
+                        <h2>Clouds</h2>
+                    </div>
+                    <p id="cloudInfo" style="font-size:20px;">--</p>
+                </div>
+            </div>
+
+
+            <div class="dashboard-card" style="text-align: center;">
+                <div>
+                    <i>👁️</i>
+                    <h2>Visibility</h2>
+                </div>
+                <p id="visibilityInfo" style="font-size:20px;">--</p>
+            </div>
+
+            <div class="dashboard-card" style="text-align: center;">
+                <div>
+                    <i class="fa-solid fa-wind" style="color: rgb(61,131,190);"></i>
+                    <h2>Wind</h2>
+                </div>
+                <p id="windInfo" style="font-size:20px;">--</p>
+
+            </div>
+        </div>
+    </div>
+    <!--About-->
+    <div class="page" id="about" style="display:none;">
+        <h2>Problem</h2>
+        <p style="font-size: 20px;">Farmers often face challenges due to unpredictable market prices and lack of access
+            to timely
+            information. The Market Predictor for Farmers addresses this issue by providing accurate price
+            predictions, weather insights, and nearby market details. This system reduces uncertainty and helps
+            farmers take better decisions, ultimately increasing their income and reducing losses</p>
+        <br>
+        <h2>Solution</h2>
+        <p style="font-size: 20px;">This project is designed to help farmers predict crop prices, check weather
+            conditions, and find nearby
+            markets. It makes farming decisions easier and helps farmers earn better profits using technology.</p>
+        <p style="font-size: 20px;">The Market Predictor for Farmers is a smart web-based application designed to assist
+            farmers in making
+            better agricultural and marketing decisions using modern technology. The system uses data analysis and
+            machine learning techniques to predict future crop prices, helping farmers decide the best time and
+            place to sell their produce for maximum profit.</p>
+        <p style="font-size: 20px;">The Market Predictor for Farmers is a full-stack web application developed using
+            modern technologies such
+            as HTML, CSS, JavaScript, Python (Flask), and MySQL. The system utilizes machine learning algorithms to
+            analyze historical market data and generate price predictions. It also integrates third-party APIs to
+            fetch real-time weather data and location-based services to identify nearby markets. The platform
+            includes role-based authentication, an admin management system, and interactive dashboards for data
+            visualization.</p>
+        <br>
+        <h2>Impact</h2>
+        <p style="font-size: 20px;">The Market Predictor for Farmers aims to bridge the gap between traditional farming
+            practices and modern
+            technology. By providing real-time data, predictive analytics, and easy-to-use tools, the platform
+            empowers farmers to make smarter decisions. This leads to better crop management, improved market
+            access, and enhanced financial stability for farmers.</p>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>

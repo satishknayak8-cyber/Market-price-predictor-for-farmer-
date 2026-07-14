@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <i class="fa-solid fa-xmark" style="color: rgb(61, 131, 190);" onclick="closePage()"></i>
+    <div class="login-container">
+        <div class="left">
+
+        </div>
+        <div class="right">
+            <h1>Wellcome</h1>
+            <hr>
+            <h2 class="login-head">Login</h2>
+            <p>Type your Username and Password for Login</p>
+            <input type="text" placeholder="Username" id="login-username">
+            <input type="password" placeholder="Password" id="login-password">
+            <p class="forget">Forget password?</p>
+                <input type="checkbox" id="checkbox-login">
+                <label for="T&C" id="tc-login">I agree Terms & Condition</label>
+                <button class="login-button" onclick="loginUser()">LogIn</button>
+                <p style="display:inline;" id="new-account">Don't have an account?</p>
+                <p style="display:inlie;" id="signup-tag" onclick="showSignup()"> SignUp</p>
+        </div>
+    </div>
+
+
+    <div class="signup-container" style="display: none;">
+        <div class="left">
+
+        </div>
+        <div class="right">
+            <h1>Wellcome</h1>
+            <hr>
+            <h2 class="login-head">SignUp</h2>
+            <p>Type your details for signUp</p>
+
+            <input type="text" placeholder="Username" id="signup-username">
+            <input type="number" placeholder="Mobile Number" id="signup-mobile">
+            <input type="email" placeholder="Email" id="signup-email">
+            <input type="password" placeholder="Password" id="signup-password">
+                <input type="checkbox" id="checkbox-signup" id="checkbox-signup">
+                <label for="T&C" id="tc-signup">I agree Terms & Condition</label>
+                <button class="signUp-button" onclick="signupUser()">SignUp</button>
+                <p style="display:inline;" id="exist-account">Account alredy exists?</p>
+                <p style="display:inlie;" id="login-tag" onclick="showLogin()"> Login</p>
+        </div>
+    </div>
+
+     <script src="app.js"></script>
+</body>
+
+</html>

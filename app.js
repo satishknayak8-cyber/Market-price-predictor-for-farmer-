@@ -51,7 +51,7 @@ async function loadWeather() {
         //const location="Balasore";
         const API_KEY = ""; // 🔥 replace with your key
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${location},IN&appid=${API_KEY}&units=metric`;
+        const url = ``;
 
         let res = await fetch(url);
 
@@ -223,7 +223,7 @@ function closePage() {
 }
 
 //admin page
-const BASE_URL = "http://127.0.0.1:5000";
+const BASE_URL = "";
 
 // Auto-check login on page load
 //window.onload = function () {
@@ -269,7 +269,7 @@ function logout() {
     document.getElementById("dashboardSection").style.display = "none";
 }
 
-const weatherAPIKey = "dcff778fda087f9980d4b892ab106d2c";
+const weatherAPIKey = "";
 //const cityName = document.getElementById("market").value;
 
 
@@ -281,7 +281,7 @@ async function addMarket() {
         let date = document.getElementById("date").value;
         let price = document.getElementById("price").value;
         const locResp = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${market}&appid=${weatherAPIKey}&units=metric`
+            ``
         );
         const locData = await locResp.json();
         let altitude = locData.coord.lat;
@@ -422,7 +422,7 @@ async function loadMarkets() {
         return;
     }
 
-    let res = await fetch("http://127.0.0.1:5000/nearby-markets", {
+    let res = await fetch("BASE_URL/nearby-markets", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ location, crop })
@@ -474,7 +474,7 @@ async function loadGraph(crop, market) {
     loader.style.display = "block";   // ✅ show loader
 
     try {
-        let res = await fetch("http://127.0.0.1:5000/price-history", {
+        let res = await fetch("BASE_URL/price-history", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

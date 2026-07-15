@@ -107,7 +107,7 @@ def add_market():
     price = data['price']
 
     # 🔹 Fetch weather automatically
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={market}&appid={API_KEY}&units=metric"
+    url = f""
     weather = requests.get(url).json()
 
     temp = weather['main']['temp']
@@ -157,7 +157,7 @@ def predict_full():
         user_loc = (float(user_lat), float(user_lon))
 
         # 👉 Still need weather → use city fallback
-        geo_url = f"https://api.openweathermap.org/data/2.5/weather?q={market}&appid={API_KEY}&units=metric"
+        geo_url = f""
         geo_res = requests.get(geo_url).json()
 
         if 'main' not in geo_res:
@@ -165,7 +165,7 @@ def predict_full():
 
     else:
         # ✅ Use city name
-        geo_url = f"https://api.openweathermap.org/data/2.5/weather?q={market}&appid={API_KEY}&units=metric"
+        geo_url = f""
         geo_res = requests.get(geo_url).json()
 
         if 'coord' not in geo_res:
@@ -281,7 +281,7 @@ def nearby_markets():
     location = data['location']
 
     # 🔹 Get location
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={location},IN&appid={API_KEY}&units=metric"
+    url = f""
     res = requests.get(url).json()
 
     if 'coord' not in res:
@@ -375,7 +375,7 @@ def price_history():
     month = today.month
 
     # 🔥 Get weather
-    geo_url = f"https://api.openweathermap.org/data/2.5/weather?q={market}&appid={API_KEY}&units=metric"
+    geo_url = f""
     geo_res = requests.get(geo_url).json()
 
     temp = geo_res['main']['temp']
